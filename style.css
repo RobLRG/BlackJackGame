@@ -17,6 +17,9 @@ body
     height: 200px;
     width: 130px;
     border-radius: 10px;
+    top: 60%;
+    left: 20%;
+    margin: 20px;
 }
 
 .botnum, .topnum

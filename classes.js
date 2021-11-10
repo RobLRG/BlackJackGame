@@ -78,7 +78,6 @@ const d = new Deck()
 d.create()
 console.log(d.cards)
 
-
 class Player
 {
     constructor(name)
@@ -86,6 +85,7 @@ class Player
         this.playerName = name
         this.playerCards = []
         this.dealerCards = []
+        this.playerStatus = "" //betting, hitting, sticking
     }
 
 //gives player 2 cards to start
@@ -107,7 +107,9 @@ class Player
         console.log(this.dealerCards)
 
         this.cardAdd()
-        animation()
+        animation("playerCards")
+        animation("dealerCards")
+        b.finish()
         return this.playerCards
     }
 
@@ -117,266 +119,89 @@ class Player
         let drawnCard = deckIn.draw()
         this.playerCards.push(drawnCard)
         console.log(this.playerCards)
-        this.afterHit()
+        let playerScore = this.getHandScore("playerCards")
+        let dealerScore = this.getHandScore("dealerCards")
+
+        if(playerScore>21)
+        {
+            g.pBust()
+        }
+        else if (playerScore>dealerScore)
+        {
+            g.pWin()
+        }
+
+        if(dealerScore>21)
+        {
+            g.dBust()
+        }
+        // else if (dealerScore>playerScore)
+        // {
+        //     g.dWin()
+        // }
+        hitAnim("playerCards")
     }
 
-    afterHit()
+    getHandScore(deck)
     {
-        if(this.playerCards.length == 3)
-        {
-            let cardScore = this.playerCards[0].values + this.playerCards[1].values + this.playerCards[2].values
-            console.log(cardScore)
-            this.addAfterHit()
+        let handScore = this[deck].reduce(function (total,card){
+            return total + card.values
+        },0)
 
-        }
-        else if(this.playerCards.length == 4)
+        if(this[deck].find(c => c.symbols == "A") && handScore>21)
         {
-            let cardScore = this.playerCards[0].values + this.playerCards[1].values + this.playerCards[2].values + 
-            this.playerCards[3].values
-            console.log(cardScore)
-            this.addAfterHit2()
+            handScore = handScore - 10
         }
-        else if(this.playerCards.length == 5)
-        {
-            let cardScore = this.playerCards[0].values + this.playerCards[1].values + this.playerCards[2].values +
-            this.playerCards[3].values + this.playerCards[4].values
-            console.log(cardScore)
-            this.addAfterHit3()
-        }
-        
+        console.log(handScore)
+        return handScore
     }
 
-    addAfterHit()
-    {
-        let cardScore = this.playerCards[0].values + this.playerCards[1].values + 
-        this.playerCards[2].values
-
-        if(this.playerCards[0].symbols == "A")
-        {
-            if(cardScore>21)
-            {
-                this.playerCards[0].values = 1
-                let cardScore = this.playerCards[0].values + this.playerCards[1].values
-                console.log("player cards equal " + cardScore)
-            }
-        }
-        else if(this.playerCards[1].symbols == "A")
-        {
-            if(cardScore>21)
-            {
-                this.playerCards[1].values = 1
-                let cardScore = this.playerCards[0].values + this.playerCards[1].values
-                console.log("player cards equal " + cardScore)
-            }
-        }
-        else if(this.playerCards[2].symbols == "A")
-        {
-            if(cardScore>21)
-            {
-                this.playerCards[2].values = 1
-                let cardScore = this.playerCards[0].values + this.playerCards[1].values + 
-                this.playerCards[2].values
-                console.log("player cards equal " + cardScore)
-            }
-        }
-        else
-        {
-            console.log("player cards equal " + cardScore)
-        }
-
-    }
-
-    addAfterHit2()
-    {
-        let cardScore = this.playerCards[0].values + this.playerCards[1].values + this.playerCards[2].values + 
-        this.playerCards[3].values
-
-        if(this.playerCards[0].symbols == "A")
-        {
-            if(cardScore>21)
-            {
-                this.playerCards[0].values = 1
-                let cardScore = this.playerCards[0].values + this.playerCards[1].values
-                console.log("player cards equal " + cardScore)
-            }
-        }
-        else if(this.playerCards[1].symbols == "A")
-        {
-            if(cardScore>21)
-            {
-                this.playerCards[1].values = 1
-                let cardScore = this.playerCards[0].values + this.playerCards[1].values
-                console.log("player cards equal " + cardScore)
-            }
-        }
-        else if(this.playerCards[2].symbols == "A")
-        {
-            if(cardScore>21)
-            {
-                this.playerCards[2].values = 1
-                let cardScore = this.playerCards[0].values + this.playerCards[1].values + 
-                this.playerCards[2].values
-                console.log("player cards equal " + cardScore)
-            }
-        }
-        else if(this.playerCards[3].symbols == "A")
-        {
-            if(cardScore>21)
-            {
-                this.playerCards[3].values = 1
-                let cardScore = this.playerCards[0].values + this.playerCards[1].values + 
-                this.playerCards[2].values + this.playerCards[3].values
-                console.log("player cards equal " + cardScore)
-            }
-        }
-        else
-        {
-            console.log("player cards equal " + cardScore)
-        }
-
-    }
-
-    addAfterHit3()
-    {
-        let cardScore = this.playerCards[0].values + this.playerCards[1].values + this.playerCards[2].values +
-        this.playerCards[3].values + this.playerCards[4].values
-
-        if(this.playerCards[0].symbols == "A")
-        {
-            if(cardScore>21)
-            {
-                this.playerCards[0].values = 1
-                let cardScore = this.playerCards[0].values + this.playerCards[1].values
-                console.log("player cards equal " + cardScore)
-            }
-        }
-        else if(this.playerCards[1].symbols == "A")
-        {
-            if(cardScore>21)
-            {
-                this.playerCards[1].values = 1
-                let cardScore = this.playerCards[0].values + this.playerCards[1].values
-                console.log("player cards equal " + cardScore)
-            }
-        }
-        else if(this.playerCards[2].symbols == "A")
-        {
-            if(cardScore>21)
-            {
-                this.playerCards[2].values = 1
-                let cardScore = this.playerCards[0].values + this.playerCards[1].values + 
-                this.playerCards[2].values
-                console.log("player cards equal " + cardScore)
-            }
-        }
-                else if(this.playerCards[3].symbols == "A")
-        {
-            if(cardScore>21)
-            {
-                this.playerCards[3].values = 1
-                let cardScore = this.playerCards[0].values + this.playerCards[1].values + 
-                this.playerCards[2].values + this.playerCards[3].values
-                console.log("player cards equal " + cardScore)
-            }
-        }
-        else if(this.playerCards[4].symbols == "A")
-        {
-            if(cardScore>21)
-            {
-                this.playerCards[4].values = 1
-                let cardScore = this.playerCards[0].values + this.playerCards[1].values + 
-                this.playerCards[2].values + this.playerCards[3].values + this.playerCards[4]
-                console.log("player cards equal " + cardScore)
-            }
-        }
-        else
-        {
-            console.log("player cards equal " + cardScore)
-        }
-
-    }
 
     cardAdd()
     {
-        let cardScore = this.playerCards[0].values + this.playerCards[1].values
-        let cardScore2 = this.dealerCards[0].values + this.dealerCards[1].values
+        let cardScore = this.playerCards.reduce(function (total,card){
+            return total + card.values
+        },0)
+        let cardScore2 = this.dealerCards.reduce(function (total,card){
+            return total + card.values
+        },0)
+        console.log(cardScore)
+        console.log(cardScore2)
 
-        if(this.playerCards[0].symbols == "A")
-        {
-            if(cardScore>21)
-            {
-                this.playerCards[0].values = 1
-                let cardScore = this.playerCards[0].values + this.playerCards[1].values
-                console.log("player cards equal " + cardScore)
-            }
-        }
-        else if(this.playerCards[1].symbols == "A")
-        {
-            if(cardScore>21)
-            {
-                this.playerCards[1].values = 1
-                let cardScore = this.playerCards[0].values + this.playerCards[1].values
-                console.log("player cards equal " + cardScore)
-            }
-        }
-        else
-        {
-            console.log("player cards equal " + cardScore)
-        }
-
-
-        if(this.dealerCards[0].symbols == "A")
-        {
-            if(cardScore2>21)
-            {
-                this.dealerCards[0].values = 1
-                let cardScore2 = this.dealerCards[0].values + this.dealerCards[1].values
-                console.log("dealer cards equal " + cardScore2)
-            }
-        }
-        else if(this.dealerCards[1].symbols == "A")
-        {
-            if(cardScore2>21)
-            {
-                this.dealerCards[1].values = 1
-                let cardScore2 = this.dealerCards[0].values + this.dealerCards[1].values
-                console.log("dealer cards equal " + cardScore2)
-            }
-        }
-        else
-        {
-            console.log("dealer cards equal " + cardScore2)
-        }
-
-
-        if(cardScore>21)
-        {
-            pBust()
-        }
-
-        if(cardScore2>21)
-        {
-            dBust()
-        }
     }
 }
-
-
 
 class Game
 {
 
     pBust()
     {
-        //player loses, money bet is lost
+        //player loses, money that was bet is lost
+        alert("you lose")
     }
 
     dBust()
     {
-        //dealer loses, money bet is doubled and given to the player
+        //dealer loses, money that was bet is doubled and given to the player
+        alert("Dealer Bust")
+    }
+
+    pWin()
+    {
+        let winnings = q.betAmount + q.betAmount
+        q.betAmount = 0
+        document.getElementById("betonscreen").innerHTML = q.betAmount
+        q.money = q.money + winnings
+        document.getElementById("moneyonscreen").innerHTML = q.money
+        console.log("you won: " +  winnings)
+        alert("you Win")
+    }
+
+    dWin()
+    {
+        alert("dealer Wins")
     }
 }
-
 
 
 
@@ -393,8 +218,6 @@ class Bet
     setUp()
     {
 
-        let b = new Bet(1000,0)
-
         let buttonHolder = document.createElement("div")
         buttonHolder.classList.add("BTNHLDR")
         document.body.appendChild(buttonHolder)
@@ -405,9 +228,9 @@ class Bet
         btn100.innerHTML="100+"
         btn100.onclick = function clicked()
         {
-            b.betAmount = b.betAmount + 100
-            console.log(b.betAmount)
-            document.getElementById("betonscreen").innerHTML = b.betAmount
+            q.betAmount = q.betAmount + 100
+            console.log(q.betAmount)
+            document.getElementById("betonscreen").innerHTML = q.betAmount
         }
 
 
@@ -417,9 +240,9 @@ class Bet
         btn500.innerHTML="500+"
         btn500.onclick = function clicked()
         {
-            b.betAmount = b.betAmount + 500
-            console.log(b.betAmount)
-            document.getElementById("betonscreen").innerHTML = b.betAmount
+            q.betAmount = q.betAmount + 500
+            console.log(q.betAmount)
+            document.getElementById("betonscreen").innerHTML = q.betAmount
         }
 
         let btn1000=document.createElement("btn")
@@ -428,9 +251,9 @@ class Bet
         btn1000.innerHTML="1000+"
         btn1000.onclick = function clicked()
         {
-            b.betAmount = b.betAmount + 1000
-            console.log(b.betAmount)
-            document.getElementById("betonscreen").innerHTML = b.betAmount
+            q.betAmount = q.betAmount + 1000
+            console.log(q.betAmount)
+            document.getElementById("betonscreen").innerHTML = q.betAmount
         }
 
         let rst=document.createElement("btn")
@@ -439,9 +262,9 @@ class Bet
         rst.innerHTML="Reset"
         rst.onclick = function clicked()
         {
-            b.betAmount = b.betAmount - b.betAmount
-            console.log(b.betAmount)
-            document.getElementById("betonscreen").innerHTML = b.betAmount
+            q.betAmount = q.betAmount - q.betAmount
+            console.log(q.betAmount)
+            document.getElementById("betonscreen").innerHTML = q.betAmount
         }
 
         let allIn=document.createElement("btn")
@@ -450,9 +273,9 @@ class Bet
         allIn.innerHTML="All In"
         allIn.onclick = function clicked()
         {
-            b.betAmount = b.money
-            console.log(b.betAmount)
-            document.getElementById("betonscreen").innerHTML = b.betAmount
+            q.betAmount = q.money
+            console.log(q.betAmount)
+            document.getElementById("betonscreen").innerHTML = q.betAmount
         }
 
         //holds onscreen number
@@ -462,27 +285,39 @@ class Bet
         document.body.appendChild(moneyHolder)
 
         let moneyOnScreen=document.createElement("h1")
+        moneyOnScreen.id="moneyonscreen"
         moneyHolder.appendChild(moneyOnScreen)
         moneyOnScreen.classList.add("money2")
-        moneyOnScreen.innerHTML=b.money
+        moneyOnScreen.innerHTML=q.money
 
         let betOnScreen=document.createElement("h1")
         betOnScreen.id="betonscreen"
         buttonHolder.appendChild(betOnScreen)
         betOnScreen.classList.add("bet2")
-        betOnScreen.innerHTML=b.betAmount
+        betOnScreen.innerHTML=q.betAmount
 
 
-        if(b.betAmount>b.money)
+        if(q.betAmount>q.money)
         {
             //stop it from working somehow bro IDK
         }
 
     }
+
+    finish()
+    {
+        q.money = q.money - q.betAmount
+        document.getElementById("moneyonscreen").innerHTML = q.money
+        // p.playerStatus = "hitting"
+        console.log("current bet: " + q.betAmount)
+        //console.log(playerStatus)
+    }
 }
 
 
 
+let q = new Bet(1000,0)
+const g = new Game()
 const p = new Player("player")
 const dl = new Player("Dealer")
 
