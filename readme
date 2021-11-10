@@ -1,0 +1,36 @@
+create deck of cards X
+deal cards           X
+front and back cards look good -- done in css
+dealer gets 1 card face up to player
+add up the numbers of the cards
+add buttons to hit or stick
+dealer will hit or stick dependant on certain rules
+add a betting system - have to bet, then press button to start the game
+add money
+W or L state - run out of money - if ( money <= 0 ){player loses}
+animate cards being dealt and then flipping over -- possible with css animation however not neccessary
+set value of each card so the computer can add them together
+
+
+
+make the bet buttons actually do something
+make the cards show onscreen
+
+
+
+
+
+
+
+
+
+game start player cant see any cards
+player places bet
+presses DEAL button when ready
+cards get dealt
+player can pres HIT or STICK to play the game
+once player presses STICK then the dealer will play
+no more buttons can be pressed at this point and the player will just see if w or l
+after W or L, cards are added back to the deck and the deck is reshuffled
+player can bet again
+this loops until the player quits or runs out of money

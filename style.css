@@ -53,3 +53,125 @@ body
 {
     color: black;
 }
+
+#startButton
+{
+    background-color: #4CAF50; 
+    color: white; 
+    border: 2px solid #4CAF50;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    position:absolute;
+    top:1200px;
+    left:500px;
+    border-radius: 6px;
+    transition-duration: 0.4s;
+}
+
+#startButton:hover 
+{
+    background-color: white; /* Green */
+    color: black;
+}
+
+#hitButton
+{
+    background-color: #4CAF50; 
+    color: white; 
+    border: 2px solid #4CAF50;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    position:absolute;
+    top:1200px;
+    left:300px;
+    border-radius: 6px;
+    transition-duration: 0.4s;
+}
+
+#hitButton:hover 
+{
+    background-color: white; /* Green */
+    color: black;
+}
+
+.BTNHLDR
+{
+    height: 200px;
+    width: 450px;
+    position: absolute;
+    top: 75%;
+    left: 60%;
+}
+
+.butt1, .butt2, .butt3, .butt4, .butt5
+{
+    background-color: #4CAF50; 
+    color: white; 
+    border: 2px solid #4CAF50;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 6px;
+    transition-duration: 0.4s;
+}
+
+.butt1:hover, .butt2:hover, .butt3:hover, .butt4:hover, .butt5:hover
+{
+    background-color: white; /* Green */
+    color: black;
+}
+
+.butt5
+{
+    position: relative;
+    left:50px;
+}
+
+.butt4
+{
+    position: relative;
+    top: 52px;
+    left: -155px;
+}
+
+.money
+{
+    background-color: black; 
+    color: white; 
+    border: 2px solid #4CAF50;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    position:absolute;
+    top:5%;
+    left:90%;
+    border-radius: 6px;
+    transition-duration: 0.4s;
+}
+
+.bet2
+{
+    background-color: red; 
+    color: white; 
+    border: 2px solid #4CAF50;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    position:absolute;
+    top:0%;
+    left:90%;
+    border-radius: 6px;
+    transition-duration: 0.4s;
+}
