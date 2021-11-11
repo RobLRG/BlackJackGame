@@ -1,0 +1,45 @@
+create deck of cards                                                                                        X
+deal cards                                                                                                  X
+front and back cards look good -- done in css
+dealer gets 1 card face up to player
+add up the numbers of the cards                                                                             X
+add buttons to hit or stick                                                                                 X
+dealer will hit or stick dependant on certain rules                                                         X
+add a betting system - have to bet, then press button to start the game                                     X
+add money                                                                                                   X
+W or L state - run out of money - if ( money <= 0 ){player loses}                                           X
+animate cards being dealt and then flipping over -- possible with css animation however not neccessary
+set value of each card so the computer can add them together                                                X
+
+
+
+make the bet buttons actually do something                                                                  X
+make the cards show onscreen
+
+
+
+
+
+
+
+
+
+game start player cant see any cards                                                            X
+player places bet                                                                               X
+presses DEAL button when ready                                                                  X
+cards get dealt                                                                                 X
+player can pres HIT or STICK to play the game                                                   X
+once player presses STICK then the dealer will play                                             X
+after W or L, cards are added back to the deck and the deck is reshuffled                       X
+player can bet again                                                                            X
+this loops until the player quits or runs out of money                                          X
+
+
+
+
+make player cards show nearer to the bottom of the screen
+have a value next to the player cards which adds up the cards
+make the dealer cards show up at the top of the screen
+one of the dealer cards is hidden to the player
+make it so when you press "hit" it shows the new card onscreen
+OPTIONAL: animate the cards being dealt if you have time bro

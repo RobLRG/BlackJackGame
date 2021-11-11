@@ -37,7 +37,7 @@ function hitDisplay(crdInfo)
     let cardInfoS = p[crdInfo].suits
     
     let cardElement = document.createElement("div")
-    cardElement.classList.add("card2")
+    cardElement.classList.add("card")
     document.body.appendChild(cardElement)
 
     let topnum=document.createElement("h1")

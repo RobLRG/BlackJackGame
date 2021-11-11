@@ -11,19 +11,6 @@ class Card
         this.values=values
     }
 
-    //turns name symbols to number values
-    toNum()
-    {
-        
-        // if(d.cards.symbols == "A")
-        // {
-        //     d.symbols == 11
-        // }
-        // else if(symbols == "J" || "Q" || "K")
-        // {
-        //     symbols == 10
-        // }
-    }
 }
 
 
@@ -231,17 +218,6 @@ class Player
             }
         }
 
-        // if(cardScore<pScore && pScore<=21)
-        // {
-        //     this.dealerCards.push(drawnCard)
-        //     let cardScore = this.dealerCards.reduce(function (total,card){
-        //         return total + card.values
-        //     },0)
-        //     console.log(this.dealerCards)
-        //     console.log(cardScore)
-            
-        // }
-
         p.checkforwin()
 
 
@@ -253,7 +229,7 @@ class Player
         let dealerScore = this.getHandScore("dealerCards")
 
 
-        if (playerScore>dealerScore && playerScore<21)
+        if (playerScore>dealerScore && playerScore<=21)
         {
             g.pWin()
         }
@@ -263,7 +239,7 @@ class Player
             g.dBust()
         }
        
-        if (dealerScore>playerScore && dealerScore<21)
+        if (dealerScore>playerScore && dealerScore<=21)
         {
             g.dWin()
         }
