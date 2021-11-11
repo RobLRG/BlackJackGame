@@ -1,14 +1,7 @@
 
-function animation(crdInfo)
+function display(crdInfo)
 {
-        // if(this.suit=`♥️` || `♦️`)
-    // {
-    //     this.classList.add("red")
-    // }
-    // else if(this.suit=`♠️` || `♣️`)
-    // {
-    //     this.classList.add("black")
-    // }
+
 
     for(let i = 0;i<p[crdInfo].length;i++)
     {
@@ -35,17 +28,16 @@ function animation(crdInfo)
         suitDisplay.innerHTML=cardInfoS
     }
 
-    // console.log(p.playerCards.values)
 }
 
 
-function hitAnim(crdInfo)
+function hitDisplay(crdInfo)
 {
     let cardInfo = p[crdInfo].symbols
     let cardInfoS = p[crdInfo].suits
     
     let cardElement = document.createElement("div")
-    cardElement.classList.add("card")
+    cardElement.classList.add("card2")
     document.body.appendChild(cardElement)
 
     let topnum=document.createElement("h1")
@@ -62,4 +54,14 @@ function hitAnim(crdInfo)
     cardElement.appendChild(suitDisplay)
     suitDisplay.classList.add("suit")
     suitDisplay.innerHTML=cardInfoS
+    
+
 }
+
+function deleteCards()
+{
+    console.log("figure out how to delete cards")
+}
+
+
+

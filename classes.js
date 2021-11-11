@@ -36,6 +36,15 @@ class Deck
         this.cards = []
     }
 
+    reset()
+    {
+        this.cards.length = this.cards.length - this.cards.length
+        p.playerCards.length = p.playerCards.length - p.playerCards.length
+        p.dealerCards.length = p.dealerCards.length - p.dealerCards.length
+        deleteCards()
+
+    }
+    
     create()
     {
 
@@ -74,10 +83,6 @@ class Deck
 }
 
 
-const d = new Deck()
-d.create()
-console.log(d.cards)
-
 class Player
 {
     constructor(name)
@@ -91,26 +96,43 @@ class Player
 //gives player 2 cards to start
     startingHand(deckIn)
     {   
-        d.shuffle()
-        for(let i = 0;i<2;i++)
-        {        
-            let drawnCard = deckIn.draw()
-            this.playerCards.push(drawnCard)
-        }
-        console.log(this.playerCards)
-        
-        for(let i = 0;i<2;i++)
-        {        
-            let drawnCard = deckIn.draw()
-            this.dealerCards.push(drawnCard)
-        }
-        console.log(this.dealerCards)
 
-        this.cardAdd()
-        animation("playerCards")
-        animation("dealerCards")
-        b.finish()
-        return this.playerCards
+        if(q.betAmount<=q.money && q.betAmount>0)
+        {
+            d.create()
+            console.log(d.cards)
+            d.shuffle()
+            //g.buttonShow()
+            for(let i = 0;i<2;i++)
+            {        
+                let drawnCard = deckIn.draw()
+                this.playerCards.push(drawnCard)
+            }
+            console.log(this.playerCards)
+            
+            for(let i = 0;i<2;i++)
+            {        
+                let drawnCard = deckIn.draw()
+                this.dealerCards.push(drawnCard)
+            }
+            console.log(this.dealerCards)
+    
+            this.cardAdd()
+             display("playerCards")
+             //animationd("dealerCards")
+            b.finish()
+            p.showScore()
+            return this.playerCards
+        }
+        else if(q.betAmount>q.money)
+        {
+            alert("you cant afford this bet")
+        }
+        else
+        {
+            alert("please enter a bet")
+        }
+
     }
 
 //give card to player if they press hit
@@ -120,26 +142,36 @@ class Player
         this.playerCards.push(drawnCard)
         console.log(this.playerCards)
         let playerScore = this.getHandScore("playerCards")
-        let dealerScore = this.getHandScore("dealerCards")
+        this.getHandScore("dealerCards")
+
+        document.getElementById("scoreOnScreen").innerHTML = playerScore
 
         if(playerScore>21)
         {
             g.pBust()
         }
-        else if (playerScore>dealerScore)
-        {
-            g.pWin()
-        }
 
-        if(dealerScore>21)
-        {
-            g.dBust()
-        }
-        // else if (dealerScore>playerScore)
-        // {
-        //     g.dWin()
-        // }
-        hitAnim("playerCards")
+        hitDisplay("playerCards")
+    }
+
+    stick()
+    {
+        //g.buttonHide()
+        p.dealerTurn(d)
+    }
+
+    showScore()
+    {
+        let handScore = this.getHandScore("playerCards")
+        let cardScoreHolder = document.createElement("div")
+        cardScoreHolder.classList.add("crdScoreHolder")
+        document.body.appendChild(cardScoreHolder)
+
+        let scoreOnScreen=document.createElement("h1")
+        scoreOnScreen.id="scoreOnScreen"
+        cardScoreHolder.appendChild(scoreOnScreen)
+        scoreOnScreen.classList.add("crdScore")
+        scoreOnScreen.innerHTML=handScore
     }
 
     getHandScore(deck)
@@ -169,7 +201,81 @@ class Player
         console.log(cardScore2)
 
     }
+
+    dealerTurn(deckIn)
+    {
+
+        let pScore = this.getHandScore("playerCards")
+        let drawnCard = deckIn.draw()
+        let cardScore = this.dealerCards.reduce(function (total,card){
+            return total + card.values
+        },0)
+        
+        if(cardScore<15)
+        {
+            this.dealerCards.push(drawnCard)
+            let cardScore = this.dealerCards.reduce(function (total,card){
+                return total + card.values
+            },0)
+            console.log(this.dealerCards)
+            console.log(cardScore)
+            
+            if(cardScore<15)
+            {
+                this.dealerCards.push(drawnCard)
+                let cardScore = this.dealerCards.reduce(function (total,card){
+                    return total + card.values
+                },0)
+                console.log(this.dealerCards)
+                console.log(cardScore)
+            }
+        }
+
+        // if(cardScore<pScore && pScore<=21)
+        // {
+        //     this.dealerCards.push(drawnCard)
+        //     let cardScore = this.dealerCards.reduce(function (total,card){
+        //         return total + card.values
+        //     },0)
+        //     console.log(this.dealerCards)
+        //     console.log(cardScore)
+            
+        // }
+
+        p.checkforwin()
+
+
+    }
+
+    checkforwin()
+    {
+        let playerScore = this.getHandScore("playerCards")
+        let dealerScore = this.getHandScore("dealerCards")
+
+
+        if (playerScore>dealerScore && playerScore<21)
+        {
+            g.pWin()
+        }
+
+        if(dealerScore>21 && playerScore<21)
+        {
+            g.dBust()
+        }
+       
+        if (dealerScore>playerScore && dealerScore<21)
+        {
+            g.dWin()
+        }
+
+        if (dealerScore == playerScore)
+        {
+            g.draw()
+        }
+    }
 }
+
+let hidden = false;
 
 class Game
 {
@@ -178,16 +284,21 @@ class Game
     {
         //player loses, money that was bet is lost
         alert("you lose")
+
+        if(q.money<=0)
+        {
+            g.gameOver()
+        }
+        else
+        {
+            d.reset()
+        }
     }
 
     dBust()
     {
         //dealer loses, money that was bet is doubled and given to the player
         alert("Dealer Bust")
-    }
-
-    pWin()
-    {
         let winnings = q.betAmount + q.betAmount
         q.betAmount = 0
         document.getElementById("betonscreen").innerHTML = q.betAmount
@@ -195,12 +306,83 @@ class Game
         document.getElementById("moneyonscreen").innerHTML = q.money
         console.log("you won: " +  winnings)
         alert("you Win")
+
+        d.reset()
+    }
+
+    pWin()
+    {
+        //betting stuff
+        let winnings = q.betAmount + q.betAmount
+        q.betAmount = 0
+        document.getElementById("betonscreen").innerHTML = q.betAmount
+        q.money = q.money + winnings
+        document.getElementById("moneyonscreen").innerHTML = q.money
+        console.log("you won: " +  winnings)
+        alert("you Win")
+
+        //reset the game but keep money amount intact
+        d.reset()
+
     }
 
     dWin()
     {
         alert("dealer Wins")
+
+        if(q.money<=0)
+        {
+            g.gameOver()
+        }
+        else
+        {
+            d.reset()
+        }
     }
+
+    draw()
+    {
+        alert("draw")
+
+        let winnings = q.betAmount
+        q.betAmount = 0
+        document.getElementById("betonscreen").innerHTML = q.betAmount
+        q.money = q.money + winnings
+        document.getElementById("moneyonscreen").innerHTML = q.money
+
+        d.reset()
+    }
+
+    gameOver()
+    {
+        let question = prompt("you are out of money, would you like to play again? (y/n)")
+
+        if(question == "y")
+        {
+            location.reload()
+        }
+        else
+        {
+            alert("THEN LEAVE BRO (or refresh page if you actually do wanna play again")
+        }
+
+    }
+
+    // buttonHide()
+    // {
+    //     hidden = !hidden;
+    //     if(hidden) {
+    //         document.getElementById('hitButton').style.display = "none";
+    //     } else {
+    //         document.getElementById('hitButton').style.display = "visible";
+    //     }
+    // }
+
+    // buttonShow()
+    // {
+    //     document.getElementById('hitButton').style.display = "visible";
+
+    // }
 }
 
 
@@ -296,16 +478,16 @@ class Bet
         betOnScreen.classList.add("bet2")
         betOnScreen.innerHTML=q.betAmount
 
-
-        if(q.betAmount>q.money)
-        {
-            //stop it from working somehow bro IDK
-        }
-
     }
 
     finish()
     {
+        
+        // if(q.betAmount>q.money)
+        // {
+        //     alert("you can't afford a bet that large")
+        //     d.reset()
+        // }
         q.money = q.money - q.betAmount
         document.getElementById("moneyonscreen").innerHTML = q.money
         // p.playerStatus = "hitting"
@@ -320,6 +502,7 @@ let q = new Bet(1000,0)
 const g = new Game()
 const p = new Player("player")
 const dl = new Player("Dealer")
+const d = new Deck()
 
 const b = new Bet()
 
